@@ -12,6 +12,8 @@ MEEQ閉域SIMを利用したサービスのため、同サービスではイン�
 Content-Typeには、application/jsonを指定し、ボディにはJson形式のデータを設定してください。
 
 本サービスでは、受信データに対し、データ送信端末の電話番号とデータ受信時刻のTimestamp情報を自動的に付与します。  
+テーブル上のプライマリパーティションキーは、「tel」  
+プライマリソートキーは、「createtime」となります。  
 受信したデータはdeviceDataパラメータにラッピングされてDynamoテーブルに保存されます。  
 
 このため、端末が送信するデータに固有情報を付与しなくても端末に割り当てたSIMの電話番号を利用したデータ解析も可能です。  
@@ -29,8 +31,8 @@ Content-Typeには、application/jsonを指定し、ボディにはJson形式の
 * Dynamoテーブル書き込み情報
 ```json
 {
-  "timestamp": 123456789,
   "tel": "08012345678",
+  "createtime": 123456789,
   "deviceData": {
     "data1": 123456,
     "data2": "hoge",
