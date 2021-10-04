@@ -54,7 +54,8 @@ https://docs.aws.amazon.com/ja_jp/amazondynamodb/latest/developerguide/ReservedW
 
 ## putImageFile
 
-HTTPS POST/PUT
+HTTPS POST/PUT  
+
 イメージファイル保存用API。  
 サービスアカウント固有に生成したS3バケットにデータを保存します。  
 データ送信端末の電話番号を利用してディレクトリを作成し、その配下にファイルを保存します。
@@ -66,7 +67,7 @@ HTTPS POST/PUT
 https://awsapi.gateway.com/api/putimagefile/abc.jpeg
 ```
 
-対応するContent-Typeは下記の通り。
+対応するContent-Typeは下記の通り。  
 ```
 application/octet-stream
 image/jpeg
@@ -78,8 +79,8 @@ image/png
 HTTPS POST  
 
 setDeviceDataとputImageFileを同時に行うことが可能なAPI。  
-multipart/form-data を利用することでDynamoDBとS3への格納を同時に行います。
-例)
+multipart/form-data を利用することでDynamoDBとS3への格納を同時に行います。  
+例)  
 ```text
 Content-Type: multipart/form-data; boundary=【user指定】
 --【user指定】
@@ -94,12 +95,13 @@ Content-Type: application/json
 
 ## getFile
 
-HTTPS GET
+HTTPS GET  
+
 サービスアカウント固有に生成したS3バケットからファイルを取得するためのAPIです。  
 デバイスのファームアップデートや設定変更ファイルのダウンロード等にご利用いただけます。  
 取得可能なファイルは、データ送信端末の電話番号ディレクトリ配下のみに限定されています。  
 URLにfilenameパラメータを付与し、値に取得するファイル名を指定します。  
-URL例  
+例)  
 ```text
 https://awsapi.gateway.com/api/getfile?filename=abc.jpeg
 ```
@@ -152,10 +154,10 @@ Amazon QuickSightを利用することで、DynamoDBに格納したデータ一�
 ユーザーへのQuickSightへのデータアクセス権限付与をサービスオプションとして提供しています。
 ご利用になりたい方はお問い合わせください。
 
-QuickSightについては下記を参照ください。
+QuickSightについては下記を参照ください。  
 https://aws.amazon.com/jp/quicksight/
 
-利用事例の紹介
+利用事例の紹介  
 https://aws.amazon.com/jp/blogs/news/quicksight-dashboard-analysis-retail/
 
 # S3バケット
