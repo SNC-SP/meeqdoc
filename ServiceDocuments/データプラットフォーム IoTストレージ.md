@@ -13,6 +13,9 @@ MEEQ閉域SIMを利用したサービスのため、同サービスではイン�
 ## setDeviceData
 
 HTTPS POST  
+```text
+https://awsapi.gateway.com/api/setdevicedata
+```
 定期/計測データ保存用API。  
 Content-Typeには、application/jsonを指定し、ボディにはJson形式のデータを設定してください。
 
@@ -54,7 +57,7 @@ https://docs.aws.amazon.com/ja_jp/amazondynamodb/latest/developerguide/ReservedW
 
 ## putImageFile
 
-HTTPS POST/PUT  
+HTTPS POST/PUT
 
 イメージファイル保存用API。  
 サービスアカウント固有に生成したS3バケットにデータを保存します。  
@@ -77,6 +80,9 @@ image/png
 ## setMultiData
 
 HTTPS POST  
+```text
+https://awsapi.gateway.com/api/setmultidata
+```
 
 setDeviceDataとputImageFileを同時に行うことが可能なAPI。  
 multipart/form-data を利用することでDynamoDBとS3への格納を同時に行います。  
