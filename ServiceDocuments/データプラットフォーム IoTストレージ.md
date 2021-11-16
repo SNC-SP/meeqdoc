@@ -86,17 +86,19 @@ https://awsapi.gateway.com/api/setmultidata
 
 setDeviceDataとputImageFileを同時に行うことが可能なAPI。  
 multipart/form-data を利用することでDynamoDBとS3への格納を同時に行います。  
+画像ファイルのアップロードのみに使用することも可能です。  
+本APIを利用した場合、Content-Dispositionのnameパラメータにpath付きでファイル名を指定することで、SIMキー情報配下の任意のS3パスにデータを格納することが可能になります。  
 例)  
 ```text
 Content-Type: multipart/form-data; boundary=【user指定】
 --【user指定】
-Content-Disposition: form-data; name="image" filename="file_yyyymmddHHMMSS.jpeg"
+Content-Disposition: form-data; name="yyyy/mm/dd/HH/MM/SS/image.jpeg" filename="file_yyyymmddHHMMSS.jpeg"
 Content-Type: image/jpeg
 【binary data】
 --【user指定】
 Content-Disposition: form-data; name="devicedata" filename="data.json"
 Content-Type: application/json
-{“lon”=123.456,”lat”=43.21,”id”=”RX-001”,”image”=”file_yyyymmddHHMMSS.jpeg”}
+{“lon”=123.456,”lat”=43.21,”id”=”RX-001”,”image”=”yyyy/mm/dd/HH/MM/SS/image.jpeg”}
 ```
 
 ## getFile
