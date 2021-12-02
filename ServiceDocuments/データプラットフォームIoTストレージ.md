@@ -114,7 +114,7 @@ URLにfilenameパラメータを付与し、値に取得するファイル名を
 https://awsapi.gateway.com/api/getfile?filename=abc.jpeg
 ```
 
-ご利用の際は、Allowヘッダに application/octet-stream MIMEタイプを指定する必要があります。  
+ご利用の際は、Acceptヘッダに application/octet-stream MIMEタイプを指定する必要があります。  
 
 ```text
 Allow: application/octet-stream
