@@ -77,6 +77,15 @@ image/jpeg
 image/png
 ```
 
+* Tips  
+利用シーンによっては、S3に配置するファイルを下記のような形で  
+```text
+s3://backet-name/02012345678/20220101/image.jpg
+```
+デバイス毎のフォルダ配下にサブフォルダを設けて配置したいという方もいるはずです。  
+その場合は、setMultiData APIをご利用頂くことで解決できます。  
+詳細はsetMultiData APIに記載。  
+
 ## setMultiData
 
 HTTPS POST  
@@ -87,7 +96,8 @@ https://awsapi.gateway.com/api/setmultidata
 setDeviceDataとputImageFileを同時に行うことが可能なAPI。  
 multipart/form-data を利用することでDynamoDBとS3への格納を同時に行います。  
 画像ファイルのアップロードのみに使用することも可能です。  
-本APIを利用した場合、Content-Dispositionのnameパラメータにpath付きでファイル名を指定することで、SIMキー情報配下の任意のS3パスにデータを格納することが可能になります。  
+本APIを利用した場合、image contentsのContent-Dispositionのnameパラメータにpath付きでファイル名を指定することで、SIMキー情報配下の任意のS3
+パスにデータを格納することが可能になります。  
 例)  
 ```text
 Content-Type: multipart/form-data; boundary=【user指定】
