@@ -86,6 +86,32 @@ s3://backet-name/02012345678/20220101/image.jpg
 その場合は、setMultiData APIをご利用頂くことで解決できます。  
 詳細はsetMultiData APIに記載。  
 
+## putAudioFile
+
+HTTPS POST/PUT
+
+音声ファイル保存用API。  
+サービスアカウント固有に生成したS3バケットにデータを保存します。  
+データ送信端末の電話番号を利用してディレクトリを作成し、その配下にファイルを保存します。
+定期的にアップロードする場合、ユーザー側でタイムスタンプ情報等固有情報をファイル名に付与してください。
+
+ファイル名はURLのラストパスに指定します。  
+例)
+```text
+https://awsapi.gateway.com/api/putaudiofile/abc.mp3
+```
+
+対応するContent-Typeは下記の通り。
+```
+application/octet-stream
+audio/mpeg
+audio/wav
+audio/x-wav
+audio/ogg
+audio/amr
+audio/webm
+```
+
 ## setMultiData
 
 HTTPS POST  
