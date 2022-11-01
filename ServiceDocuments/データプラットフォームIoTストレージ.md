@@ -14,7 +14,7 @@ MEEQ閉域SIMを利用したサービスのため、同サービスではイン�
 
 HTTPS POST  
 ```text
-https://awsapi.gateway.com/api/setdevicedata
+https://awsapi.gateway.com/api/setDeviceData
 ```
 定期/計測データ保存用API。  
 Content-Typeには、application/jsonを指定し、ボディにはJson形式のデータを設定してください。
@@ -67,7 +67,13 @@ HTTPS POST/PUT
 ファイル名はURLのラストパスに指定します。  
 例)  
 ```text
-https://awsapi.gateway.com/api/putimagefile/abc.jpeg
+https://awsapi.gateway.com/api/putImageFile/abc.jpeg
+```
+
+MEEQ AIを実行する場合、AI用のURLを指定する必要があります。  
+例)
+```text
+https://awsapi.gateway.com/api/ai/putImageFile/abc.jpeg
 ```
 
 対応するContent-Typeは下記の通り。  
@@ -86,11 +92,44 @@ s3://backet-name/02012345678/20220101/image.jpg
 その場合は、setMultiData APIをご利用頂くことで解決できます。  
 詳細はsetMultiData APIに記載。  
 
+# putAudioFile
+
+HTTPS POST/PUT
+
+音声ファイル保存用API。  
+サービスアカウント固有に生成したS3バケットにデータを保存します。  
+データ送信端末の電話番号を利用してディレクトリを作成し、その配下にファイルを保存します。
+定期的にアップロードする場合、ユーザー側でタイムスタンプ情報等固有情報をファイル名に付与してください。
+
+対応するContent-Typeは下記の通り。
+```
+application/octet-stream
+audio/mpeg
+audio/wav
+audio/x-wav
+audio/ogg
+audio/amr
+audio/webm
+```
+
+* HTTP メソッド  
+  PUT or POSTに対応。
+  URLのパスにアップロードするコンテンツのファイル名を指定する。
+``` text
+https://awsapi.gateway.com/api/putAudioFile/abc.mp3
+```
+
+MEEQ AIを実行する場合、AI用のURLを指定する必要があります。  
+例)
+```text
+https://awsapi.gateway.com/api/ai/putAudioFile/abc.mp3
+```
+
 ## setMultiData
 
 HTTPS POST  
 ```text
-https://awsapi.gateway.com/api/setmultidata
+https://awsapi.gateway.com/api/setMultiData
 ```
 
 setDeviceDataとputImageFileを同時に行うことが可能なAPI。  
@@ -121,7 +160,7 @@ HTTPS GET
 URLにfilenameパラメータを付与し、値に取得するファイル名を指定します。  
 例)  
 ```text
-https://awsapi.gateway.com/api/getfile?filename=abc.jpeg
+https://awsapi.gateway.com/api/getFile?filename=abc.jpeg
 ```
 
 ご利用の際は、Acceptヘッダに application/octet-stream MIMEタイプを指定する必要があります。  
@@ -130,6 +169,177 @@ https://awsapi.gateway.com/api/getfile?filename=abc.jpeg
 Allow: application/octet-stream
 ```
 
+## マルチパートアップロード機能
+
+データサイズが6Mbyteを超えるバイナリデータを送信したい場合、本機能を利用することで可能になります。  
+マルチパートアップロード機能には、下記の3つのAPIが用意されており
+
+* startMultiPartUpload
+* setMultiPartUpload
+* completeMultiPartUpload
+
+上記3APIを利用することで、マルチパートアップロードが可能になります。
+
+### startMultiPartUpload API
+
+HTTPS GET  
+```text
+https://awsapi.gateway.com/api/startMultiPartUpload/filename.mp3
+```  
+MEEQ AIを実行したい場合、AI用のURLで実行してください。  
+```text
+https://awsapi.gateway.com/api/ai/startMultiPartUpload/filename.mp3
+```  
+
+マルチパートアップロードを開始する際に利用するAPI。  
+本APIを利用することで、以降に必要となるuploadIdと配置ディレクトリの取得が出来ます。
+URLのパスにアップロードするコンテンツのS3ファイル名を指定します。  
+
+* レスポンス  
+  body例)
+```json
+{
+  "uploadId": "xxxx-xxxx-xxxx-xxxx",
+  "destination": "08012345678/filename.mp3"
+}
+```
+
+### putMultiPartUpload API
+
+HTTPS POST  
+```text
+https://awsapi.gateway.com/api/putMultiPartUpload
+```
+
+分割したパーツファイルをアップロードするためのAPI。  
+パーツは、4Mbyte以下のバイナリをbase64でエンコードしたものを指定すること。  
+パーツの数だけpartNumberをインクリメントして送信すること。  
+あるパーツの送信に失敗した場合、パーツナンバーをそのままで再送することが可能です。  
+
+#### リクエストBody
+Json
+
+| パラメータ名     | M/O |  タイプ   | 説明                                                    | 値の例                         |
+|:-----------|:---:|:------:|:------------------------------------------------------|:----------------------------|
+| uploadId   |  M  | String | startMultiPartUploadのレスポンスで取得したuploadIdを指定。           | "uploadId":"xxxx-xxxx-xxxx" |
+| data       |  M  | String | 分割したバイナリをbase64でエンコードしたデータ。エンコード前のサイズで4Mbyte以下で指定する事。 | "data":"abcdexxxx"          |
+| partNumber |  O  | Number | パーツ番号を指定する。連結時に同番号順に実行される。                            | "partNumber":1              |
+
+* body例
+```json
+{
+  "uploadId": "xxxx-xxxx-xxxx",
+  "data": "abcdexxxx",
+  "partNumber": 1
+}
+```
+
+#### レスポンスBody
+なし
+
+### completeMultiPartUpload API
+
+HTTPS POST  
+```text
+https://awsapi.gateway.com/api/completeMultiPartUpload
+```  
+putMultiPartUpload APIで全てのパーツファイルのアップロード完了後に本APIを呼び出し、ファイル連結を行います。  
+
+#### リクエストBody
+Json
+
+| パラメータ名      | M/O |  タイプ   | 説明                                             | 値の例                                      |
+|:------------|:---:|:------:|:-----------------------------------------------|:-----------------------------------------|
+| uploadId    |  M  | String | startMultiPartUploadのレスポンスで取得したuploadIdを指定。    | "uploadId":"xxxx-xxxx-xxxx"              |
+| destination |  M  | String | startMultiPartUploadのレスポンスで取得したdestinationを指定。 | "destination":"08012345678/filename.mp3" |
+
+* body例
+```json
+{
+  "uploadId": "xxxx-xxxx-xxxx",
+  "destination": "08012345678/filename.mp3"
+}
+```
+
+#### レスポンスBody
+なし
+
+## マルチパートアップロードAPI実装サンプル
+
+下記にPython3で実装する場合のサンプルコードを記載します。  
+```python
+#!/usr/bin/python3
+
+import base64
+import json
+import requests
+import sys
+
+apiurl='https://awsapi.gateway.com/api/'
+starturl = apiurl + 'startMultiPartUpload/'
+puturl= apiurl + 'putMultiPartUpload'
+compurl= apiurl + 'completeMultiPartUpload'
+retry_counter = 3
+
+def putMultiPartUpload(data):
+	return requests.post(puturl, data = data)
+
+# 引数にアップロード対象ファイルのフルパスとS3に格納する際のファイル名を指定
+args = sys.argv
+
+file_path = args[1]
+uploadFileName = args[2]
+
+resp = requests.get(starturl + uploadFileName)
+if resp.status_code != 200:
+	print("startMultiPartUpload failed.")
+	sys.exit(-1)
+
+respJson = resp.json()
+uploadId = respJson['uploadId']
+destination = respJson['destination']
+print('uploadId: ' + uploadId + ', destination: ' + destination)
+
+with open(file_path, 'rb') as f:
+	part_number = 1
+	while True:
+		piece = f.read(4200000)
+		if piece == b'':
+			break
+		b64encoded = base64.b64encode(piece)
+		strJson = {
+			"uploadId": str(uploadId),
+			"data": b64encoded.decode('utf-8'),
+			"partNumber": part_number
+		}
+
+		for counter in range(retry_counter):
+			resp = putMultiPartUpload(json.dumps(strJson))
+			print(resp)
+			if resp.status_code == 200:
+				break
+			elif counter == retry_counter -1:
+				print("retry over. putMultiPartUpload failed.")
+				sys.exit(-1)
+			print("putMultiPartUpload fialed.... retry.")
+		print("parts " + str(part_number) + " upload ok.")
+		part_number += 1
+print("All parts have been uploaded.")
+strJson = {
+	"destination": str(destination),
+	"uploadId": str(uploadId)
+}
+resp = requests.post(compurl,
+	data = json.dumps(strJson)
+)
+# completeMultiPartUploadに失敗した場合
+# uploadIdとdestinationを保持していればリトライすることが可能
+print(resp)
+sys.exit(0)
+
+```
+
+
 # Dynamoテーブル
 
 本サービス開始時にユーザーのAWSアカウントIDに対して、専用テーブルに対するアクセス権限を付与したARNを配布します。
@@ -137,13 +347,13 @@ Allow: application/octet-stream
 ```json
 "Effect": "Allow",
 "Action": [
-"dynamodb:BatchGetItem",
-"dynamodb:BatchWriteItem",
-"dynamodb:DeleteItem",
-"dynamodb:GetItem",
-"dynamodb:PutItem",
-"dynamodb:Query",
-"dynamodb:UpdateItem"
+  "dynamodb:BatchGetItem",
+  "dynamodb:BatchWriteItem",
+  "dynamodb:DeleteItem",
+  "dynamodb:GetItem",
+  "dynamodb:PutItem",
+  "dynamodb:Query",
+  "dynamodb:UpdateItem"
 ],
 ```
 
