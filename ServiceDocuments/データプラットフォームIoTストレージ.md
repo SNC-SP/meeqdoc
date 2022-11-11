@@ -70,7 +70,7 @@ HTTPS POST/PUT
 https://awsapi.gateway.com/api/putImageFile/abc.jpeg
 ```
 
-MEEQ AIを実行する場合、AI用のURLを指定する必要があります。  
+MEEQ AI 炎検出βを実行する場合、AI用のURLを指定する必要があります。  
 例)
 ```text
 https://awsapi.gateway.com/api/ai/putImageFile/abc.jpeg
@@ -119,7 +119,7 @@ audio/webm
 https://awsapi.gateway.com/api/putAudioFile/abc.mp3
 ```
 
-MEEQ AIを実行する場合、AI用のURLを指定する必要があります。  
+MEEQ AI 文字起こしを実行する場合、AI用のURLを指定する必要があります。  
 例)
 ```text
 https://awsapi.gateway.com/api/ai/putAudioFile/abc.mp3
