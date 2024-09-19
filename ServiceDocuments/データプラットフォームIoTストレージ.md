@@ -417,7 +417,7 @@ DynamoDBの特性上、1クエリで取得可能なデータサイズが1Mbyte�
 
 ### URL
 
-GET /getDataBySimKey
+GET /getdatabysimkey
 
 ### リクエスト
 Json
@@ -449,7 +449,7 @@ DynamoDBの特性上、1スキャンで取得可能なデータサイズが1Mbyt
 
 ### URL
 
-GET /getDataByDeviceData  
+GET /getdatabydevicedata  
 
 ### リクエスト
 Json
