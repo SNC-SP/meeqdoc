@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+	<dict>
+		<key>ConsentText</key>
+		<dict>
+			<key>default</key>
+			<string>MEEQ APN構成プロファイル (Cellular Payload版)</string>
+		</dict>
+		<key>PayloadContent</key>
+		<array>
+			<dict>
+				<key>AttachAPN</key>
+				<dict>
+					<key>Name</key>
+					<string>meeq.io</string>
+					<key>AuthenticationType</key>
+					<string>CHAP</string>
+					<key>Username</key>
+					<string>meeq</string>
+					<key>Password</key>
+					<string>meeq</string>
+				</dict>
+				<key>APNs</key>
+				<array>
+					<dict>
+						<key>Name</key>
+						<string>meeq.io</string>
+						<key>AuthenticationType</key>
+						<string>CHAP</string>
+						<key>Username</key>
+						<string>meeq</string>
+						<key>Password</key>
+						<string>meeq</string>
+					</dict>
+				</array>
+				<key>PayloadDescription</key>
+				<string>Provides customization of carrier Access Point Name.</string>
+				<key>PayloadDisplayName</key>
+				<string>MEEQ APN</string>
+				<key>PayloadIdentifier</key>
+				<string>jp.meeq.profile</string>
+				<key>PayloadOrganization</key>
+				<string>meeq</string>
+				<key>PayloadType</key>
+				<string>com.apple.cellular</string>
+				<key>PayloadUUID</key>
+				<string>9B81A818-C9A6-4B6C-A00F-7E147304312B</string>
+				<key>PayloadVersion</key>
+				<integer>1</integer>
+			</dict>
+		</array>
+		<key>PayloadDescription</key>
+		<string>(Cellular) MEEQ SIMサービス APN設定プロファイル</string>
+		<key>PayloadDisplayName</key>
+		<string>(Cellular) MEEQ SIMサービス</string>
+		<key>PayloadIdentifier</key>
+		<string>jp.meeq.profile</string>
+		<key>PayloadOrganization</key>
+		<string>meeq</string>
+		<key>PayloadType</key>
+		<string>Configuration</string>
+		<key>PayloadUUID</key>
+		<string>163664BB-D822-489A-AD11-0EC7D2686938</string>
+		<key>PayloadVersion</key>
+		<integer>1</integer>
+	</dict>
+</plist>
